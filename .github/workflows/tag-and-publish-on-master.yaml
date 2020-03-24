@@ -28,6 +28,8 @@ jobs:
           version: 10.x
       - name: npm ci
         run: npm ci
+      - name: npm run build
+        run: npm run build
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v1
         with:
