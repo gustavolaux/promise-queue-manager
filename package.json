@@ -1,0 +1,44 @@
+{
+  "name": "promise-queue-manager",
+  "version": "0.0.1",
+  "description": "A queue manager for concurrent promise execution",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint src/** --ext .ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gustavolaux/promise-queue-manager.git"
+  },
+  "keywords": [
+    "promise",
+    "queue",
+    "promise-queue"
+  ],
+  "author": {
+    "name": "Gustavo Laux",
+    "url": "https://gustavolaux.com.br",
+    "email": "contact@gustavolaux.com.br"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gustavolaux/promise-queue-manager/issues"
+  },
+  "homepage": "https://github.com/gustavolaux/promise-queue-manager#readme",
+  "devDependencies": {
+    "@babel/core": "7.6.4",
+    "@babel/preset-env": "7.6.3",
+    "@babel/preset-typescript": "7.6.0",
+    "@types/node": "13.9.3",
+    "@typescript-eslint/eslint-plugin": "2.3.1",
+    "@typescript-eslint/parser": "2.3.1",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.1.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
+    "typescript": "3.6.3"
+  }
+}
