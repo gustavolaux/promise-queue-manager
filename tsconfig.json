@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outDir": "dist",
+        "declaration": true,
+        "allowSyntheticDefaultImports": true,
+        "lib": ["esnext"],
+        "target": "ES2015"
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
