@@ -1,5 +1,9 @@
 # promise-queue-manager
 
+[![npm version](https://img.shields.io/npm/v/promise-queue-manager.svg?style=flat)](https://www.npmjs.org/package/promise-queue-manager)
+[![install size](https://packagephobia.now.sh/badge?p=promise-queue-manager)](https://packagephobia.now.sh/result?p=promise-queue-manager)
+[![language](https://img.shields.io/github/languages/top/gustavolaux/promise-queue-manager?style=flat)](https://www.npmjs.org/package/promise-queue-manager)
+
 A queue manager for concurrent promise execution
 
 ## Installation
