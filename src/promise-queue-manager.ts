@@ -41,7 +41,7 @@ export default class PromiseQueue<T> extends EventEmitter {
     constructor(config: Config<T>, concurrence: number, shouldStopOnError: boolean = false) {
         super();
 
-        if (!config || !config.promises || (!config.items && !config.promise)) {
+        if (!config || (!config.promises || (!config.items && !config.promise))) {
             throw new Error('Invalid config');
         }
 
