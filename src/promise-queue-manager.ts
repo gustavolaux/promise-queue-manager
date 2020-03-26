@@ -135,7 +135,7 @@ export default class PromiseQueue<T> extends EventEmitter {
             return false;
         }
 
-        const canExecuteNextPromise = this._concurrence > this._running;
+        const canExecuteNextPromise = this._items.length !== 0 && this._concurrence > this._running;
 
         return canExecuteNextPromise;
     }
