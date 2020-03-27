@@ -1,6 +1,6 @@
 {
   "name": "promise-queue-manager",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "A queue manager for concurrent promise execution",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
