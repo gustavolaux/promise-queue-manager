@@ -129,13 +129,16 @@ export default class PromiseQueue<T> extends EventEmitter {
             return false;
         }
 
-        if (this._items.length === 0 && this._running === 0) {
+        const hasWaitingItems = (this._items && this._items.length > 0)
+            || (this._promises && this._promises.length > 0);
+
+        if (!hasWaitingItems && this._running === 0) {
             this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED);
 
             return false;
         }
 
-        const canExecuteNextPromise = this._items.length !== 0 && this._concurrence > this._running;
+        const canExecuteNextPromise = hasWaitingItems && this._concurrence > this._running;
 
         return canExecuteNextPromise;
     }
