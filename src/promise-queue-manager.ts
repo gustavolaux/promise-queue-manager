@@ -58,7 +58,10 @@ export default class PromiseQueue<T> extends EventEmitter {
         const canRun = this._canRun();
         if (!canRun) return;
 
-        for (let i = 0; i < this._concurrence; i += 1) {
+        const queueSize = this._items ? this._items.length : this._promises.length;
+        const firstInteractionSize = Math.min(queueSize, this._concurrence);
+
+        for (let i = 0; i < firstInteractionSize; i += 1) {
             this._runNextPromise();
         }
     }
