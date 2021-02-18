@@ -2,6 +2,9 @@
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
     "extends": "airbnb-base",
+    "env": {
+        "mocha": true
+    },
     "rules": {
         "indent": [ "error", 4, { "SwitchCase": 1 }],
         "no-underscore-dangle": "off",
