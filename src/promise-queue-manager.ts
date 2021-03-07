@@ -129,6 +129,8 @@ export default class PromiseQueue<T> extends EventEmitter {
         if (this._shouldStopOnError && this._hasError) {
             this.cancel();
 
+            this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED, this._hasError);
+
             return false;
         }
 
@@ -136,7 +138,7 @@ export default class PromiseQueue<T> extends EventEmitter {
             || (this._promises && this._promises.length > 0);
 
         if (!hasWaitingItems && this._running === 0) {
-            this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED);
+            this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED, this._hasError);
 
             return false;
         }
