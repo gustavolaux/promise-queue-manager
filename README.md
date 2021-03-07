@@ -17,6 +17,10 @@ $ npm i -S promise-queue-manager
 
 Sometimes you have to do any large processing using a promise list and you don't want to `Promise.all` then because it will load all the promises into memory and will stop when any error occur. This package can help you with that! You can specify concurrence and set if it can continue processing even if any error occur. It has zero external dependencies and uses `EventEmitter` to control event flow.
 
+## Upgrading from 1.x.x to 2.x.x
+
+`PromiseQueue.EVENTS.QUEUE_PROCESSED` is now fired even if `shouldStopOnError` is set to `true`.
+
 ## Usage
 
 ### Demo
@@ -91,10 +95,6 @@ Now you can start the queue:
 ```
 queue.start();
 ```
-
-### Notes
-
-If you set `shouldStopOnError` to `true` you won't receive `PromiseQueue.EVENTS.QUEUE_PROCESSED` event.
 
 ## License
 

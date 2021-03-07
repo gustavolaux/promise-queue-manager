@@ -17,12 +17,6 @@ describe('PromiseQueue suite', function() {
         const concurrence = 1;
         const shouldStopOnError = true;
 
-        let promise;
-
-        beforeEach(function() {
-            promise = getMockPromise(10, true);
-        });
-
         it('should resolve promise with items', function(done) {
             try {
                 const config = {
@@ -36,7 +30,11 @@ describe('PromiseQueue suite', function() {
                     return done(new Error('Error on promise resolving'));
                 });
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, done);
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done(new Error('should not has error'));
+
+                  return done();
+                });
 
                 queue.start();
             } catch (err) {
@@ -56,7 +54,11 @@ describe('PromiseQueue suite', function() {
                     return done(new Error('Error on promise resolving'));
                 });
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, done);
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done(new Error('should not has error'));
+
+                  return done();
+                });
 
                 queue.start();
             } catch (err) {
@@ -72,10 +74,10 @@ describe('PromiseQueue suite', function() {
 
                 const queue = new PromiseQueue(config, concurrence, shouldStopOnError);
 
-                queue.on(PromiseQueue.EVENTS.ITEM_ERROR, () => done());
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done();
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, () => {
-                    return done(new Error('Promise should not be resolved'));
+                  return done(new Error('should not has error'));
                 });
 
                 queue.start();
@@ -88,12 +90,6 @@ describe('PromiseQueue suite', function() {
     describe('Test with 1 promise and 10 concurrency', function() {
         const concurrence = 10;
         const shouldStopOnError = true;
-
-        let promise;
-
-        beforeEach(function() {
-            promise = getMockPromise(10, true);
-        });
 
         it('should resolve promise with items', function(done) {
             try {
@@ -108,7 +104,11 @@ describe('PromiseQueue suite', function() {
                     return done(new Error('Error on promise resolving'));
                 });
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, done);
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done(new Error('should not has error'));
+
+                  return done();
+                });
 
                 queue.start();
             } catch (err) {
@@ -128,7 +128,11 @@ describe('PromiseQueue suite', function() {
                     return done(new Error('Error on promise resolving'));
                 });
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, done);
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done(new Error('should not has error'));
+
+                  return done();
+                });
 
                 queue.start();
             } catch (err) {
@@ -144,10 +148,10 @@ describe('PromiseQueue suite', function() {
 
                 const queue = new PromiseQueue(config, concurrence, shouldStopOnError);
 
-                queue.on(PromiseQueue.EVENTS.ITEM_ERROR, () => done());
+                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, (hasError: boolean) => {
+                  if (hasError) return done();
 
-                queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, () => {
-                    return done(new Error('Promise should not be resolved'));
+                  return done(new Error('should not has error'));
                 });
 
                 queue.start();
