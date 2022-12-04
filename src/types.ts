@@ -19,7 +19,9 @@ export interface PrivateEvents {
 }
 
 export interface Config<T> {
+    concurrence: number;
+    shouldStopOnError?: boolean;
     items?: Array<T>;
     promise?: PromiseFunction<T>;
-    promises?: Promise<T>[];
+    promises?: Array<PromiseFunction<T>>;
 }
