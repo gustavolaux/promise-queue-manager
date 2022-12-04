@@ -9,17 +9,24 @@ A queue manager for concurrent promise execution
 
 ## Installation
 
-```
-$ npm i -S promise-queue-manager
+```sh
+npm i -S promise-queue-manager
 ```
 
 ## Why use this module?
 
 Sometimes you have to do any large processing using a promise list and you don't want to `Promise.all` then because it will load all the promises into memory and will stop when any error occur. This package can help you with that! You can specify concurrence and set if it can continue processing even if any error occur. It has zero external dependencies and uses `EventEmitter` to control event flow.
 
-## Upgrading from 1.x.x to 2.x.x
+## Upgrading
 
-`PromiseQueue.EVENTS.QUEUE_PROCESSED` is now fired even if `shouldStopOnError` is set to `true`.
+### From 2.x.x to 3.x.x
+
+- Old constructor parameters `concurrence` and `shouldStopOnError` are now passed in `config` object.
+- The `promises` list parameter now require a function that returns a promise to avoid early promise execution. (Huge thanks to [@dArignac](https://github.com/dArignac) with [this issue](https://github.com/gustavolaux/promise-queue-manager/issues/16))
+
+### From 1.x.x to 2.x.x
+
+- `PromiseQueue.EVENTS.QUEUE_PROCESSED` is now fired even if `shouldStopOnError` is set to `true`.
 
 ## Usage
 
@@ -29,44 +36,53 @@ You can access a repl demo [here](https://repl.it/@gustavolaux/promise-queue-man
 
 ### Setup
 
-Considering you have a list of promises, you can do this:
-```
-const promises: Promise<any>[] = [];
+You can use this lib in two ways: with a list of functions that return a promise or with a promise and a list of items to process. In both cases:
 
-const config = {
-    promises: promises,
-};
-```
+```ts
+const saveOnDatabase = async (data) => {
+    const result = await repository.save(data);
 
-If you have a list of items and a promise to execute it, you can do this:
-```
-const items: any[] = [];
-const promise: () => Promise<any> = (item) => {
-    return new Promise((resolve, reject) => {
-        // do your stuff
-
-        return resolve(); // or reject
-    });
+    return result;
 };
 
 const config = {
-    items: items,
-    promise: promise,
+    concurrence: 10,
+    shouldStopOnError: true,
 };
 ```
 
-Then you can setup a queue:
-```
-const concurrente = 10;
-const shouldStopOnError = false;
+Using a list of promises:
+```ts
+const items = [
+    { name: 'foo' },
+    { name: 'bar' },
+];
 
-const queue = new PromiseQueue<any>(config, concurrente, shouldStopOnError);
+// you need to wrap your promise inside a function
+// to avoid early calls
+config.promises = items.map(item => () => saveOnDatabase(item));
+```
+
+Using a list of items:
+```ts
+const items = [
+    { name: 'foo' },
+    { name: 'bar' },
+];
+
+config.promise = saveOnDatabase;
+config.items = items;
+```
+
+Now you can initialize the queue:
+```ts
+const queue = new PromiseQueue<YourInterface>(config);
 ```
 
 ### Listening
 
 Now you can setup your listeners. The `PromiseQueue` class have a static enum that helps you setting up your listeners: `ITEM_ERROR`, `ITEM_PROCESSING`, `ITEM_PROCESSED` and `QUEUE_PROCESSED`, it stays in `PromiseQueue.EVENTS`.
-```
+```ts
 queue.on(PromiseQueue.EVENTS.ITEM_ERROR, (response: PromiseQueueItemResponse<any>) => {
     console.error(response);
 
@@ -74,6 +90,7 @@ queue.on(PromiseQueue.EVENTS.ITEM_ERROR, (response: PromiseQueueItemResponse<any
     queue.cancel();
 });
 
+// useful only if `items` is used
 queue.on(PromiseQueue.EVENTS.ITEM_PROCESSING, (response: PromiseQueueItemResponse<any>) => {
     console.log(response);
 });
@@ -92,7 +109,7 @@ queue.on(PromiseQueue.EVENTS.QUEUE_PROCESSED, () => {
 ```
 
 Now you can start the queue:
-```
+```ts
 queue.start();
 ```
 
