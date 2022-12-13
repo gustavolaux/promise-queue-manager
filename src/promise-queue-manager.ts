@@ -28,7 +28,7 @@ export default class PromiseQueue<T> extends EventEmitter {
 
     private _promise: PromiseFunction<T>;
 
-    private _promises: Array<() => Promise<T>>;
+    private _promises: Array<PromiseFunction<T>>;
 
     private _concurrence: number;
 
