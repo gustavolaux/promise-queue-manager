@@ -28,7 +28,7 @@ export default class PromiseQueue<T> extends EventEmitter {
 
     private _promise: PromiseFunction<T>;
 
-    private _promises: Promise<T>[];
+    private _promises: Array<PromiseFunction<T>>;
 
     private _concurrence: number;
 
@@ -38,18 +38,18 @@ export default class PromiseQueue<T> extends EventEmitter {
 
     private _hasError: boolean = false;
 
-    constructor(config: Config<T>, concurrence: number, shouldStopOnError: boolean = false) {
+    constructor(config: Config<T>) {
         super();
 
-        if (!config || (!config.promises && (!config.items || !config.promise))) {
-            throw new Error('Invalid config');
-        }
+        if (!config) throw new Error('Missing config parameter');
+        if (!config.promises && (!config.items || !config.promise)) throw new Error('Missing items');
+        if (!config.concurrence) throw new Error('Missing concurrence');
 
-        this._items = config.items;
+        this._items = Array.from(config.items || []);
         this._promise = config.promise;
         this._promises = config.promises;
-        this._concurrence = concurrence;
-        this._shouldStopOnError = shouldStopOnError;
+        this._concurrence = config.concurrence;
+        this._shouldStopOnError = !!config.shouldStopOnError;
 
         this._setupListeners();
     }
@@ -87,17 +87,8 @@ export default class PromiseQueue<T> extends EventEmitter {
         });
     }
 
-    private _executePromise(promise: Promise<T> | PromiseFunction<T>, item?: T): void {
-        let execute: Promise<T>;
-
-        if (!item) {
-            execute = promise as Promise<T>;
-        } else {
-            const promiseFunction = promise as PromiseFunction<T>;
-            execute = promiseFunction(item);
-        }
-
-        execute
+    private _executePromise(promise: PromiseFunction<T>, item?: T): void {
+        promise(item)
             .then((res) => {
                 this.emit(PromiseQueue.EVENTS.ITEM_PROCESSED, { res, item });
             })
@@ -127,9 +118,11 @@ export default class PromiseQueue<T> extends EventEmitter {
 
     private _canRun(): boolean {
         if (this._shouldStopOnError && this._hasError) {
-            this.cancel();
-
-            this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED, this._hasError);
+            if (this._running === 0) {
+                this.emit(PromiseQueue.EVENTS.QUEUE_PROCESSED, this._hasError);
+            } else {
+                this.cancel();
+            }
 
             return false;
         }
