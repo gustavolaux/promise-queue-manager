@@ -1,9 +1,9 @@
-name: Tag and Publish on master
+name: Tag and Publish
 
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'package.json'
       - 'package-lock.json'
