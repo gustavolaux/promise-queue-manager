@@ -1,4 +1,11 @@
 node_modules/
 
+.vscode/
 .github/
 src/
+tests/
+
+tsconfig.json
+.eslintrc
+.eslintignore
+.mocharc.json
