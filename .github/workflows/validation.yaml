@@ -1,23 +1,24 @@
-name: Lint and Test
+name: Validation
 
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
-  lint-and-test:
-    name: Lint
-    runs-on: ${{ matrix.operating-system }}
+  validation:
+    name: Validation on ${{ matrix.os }} @ ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
+        node: ['14', '16', '18', '20', '22']
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set Node.js 16.x
+      - name: Set Node.js ${{ matrix.node }}
         uses: actions/setup-node@master
         with:
-          version: 16.x
+          version: ${{ matrix.node }}
       - name: npm ci
         run: npm ci
       - name: npm run lint
