@@ -11,7 +11,7 @@ jobs:
       - name: generate comment
         id: generate_comment
         run: | 
-              curl --location --request POST 'https://api.openai.com/v1/engines/text-davinci-003/completions' --header 'Authorization: Bearer ${{ secrets.OPENAI_KEY }}' --header 'Content-Type: application/json' --data-raw '{ "prompt": "be grateful for the new issue and let it know that we will take an action in a few moments", "temperature": 0.7, "max_tokens": 256, "top_p": 1, "best_of": 2, "frequency_penalty": 1, "presence_penalty": 1 }' -o openai.json
+              curl --location --request POST 'https://api.openai.com/v1/engines/text-davinci-003/completions' --header 'Authorization: Bearer ${{ secrets.OPENAI_KEY }}' --header 'Content-Type: application/json' --data-raw '{ "prompt": "be grateful for the new issue and let them know that we will take an action in a few moments", "temperature": 0.7, "max_tokens": 256, "top_p": 1, "best_of": 2, "frequency_penalty": 1, "presence_penalty": 1 }' -o openai.json
               echo "::set-output name=text::$(cat openai.json | jq -c '.choices[0].text' | sed 's/\\n//g' | sed 's/\"//g')"
       - name: comment
         uses: actions/github-script@v3
