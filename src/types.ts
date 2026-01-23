@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 export type PromiseFunction<T> = (...args: any) => Promise<T>;
 
 export interface PromiseQueueItemResponse<T> {
