@@ -1,6 +1,6 @@
 {
   "name": "promise-queue-manager",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A queue manager for concurrent promise execution",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,5 +49,8 @@
     "mocha": "10.8.2",
     "ts-node": "9.1.1",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
   }
 }
